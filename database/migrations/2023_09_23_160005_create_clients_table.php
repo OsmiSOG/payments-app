@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('identification_number');
             $table->string('number_phone');
             $table->string('country');
+            $table->string('city');
             $table->string('address');
             $table->foreignId('user_id')->constrained('users');
             $table->timestamps();

@@ -15,16 +15,11 @@ class Transaction extends Model
     protected $fillable = [
         'amount',
         'description',
-        'status',
         'currency',
         'payment_method',
-        'network',
-        'card_label',
         'reference_1',
         'reference_2',
         'reference_3',
-        'status_at',
-        'tokenized',
     ];
 
     /**
