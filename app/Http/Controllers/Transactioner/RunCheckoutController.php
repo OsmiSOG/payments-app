@@ -12,7 +12,7 @@ use Illuminate\Validation\Rule;
 use LVR\CreditCard\CardCvc;
 use LVR\CreditCard\CardExpirationDate;
 use LVR\CreditCard\CardNumber;
-use LVR\CreditCard\Factory as CardMask;
+use Illuminate\Support\Str;
 
 class RunCheckoutController extends Controller
 {
@@ -31,7 +31,7 @@ class RunCheckoutController extends Controller
             $transaction->network = $card['card_network'];
             $transaction->status = $card['status'];
         } else {
-            $transaction->network = CardMask::makeFromNumber($request->number)->brand;
+            $transaction->network = '';
             $transaction->status = TransactionStatus::Failed->value;
         }
 
