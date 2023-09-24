@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('reference_2');
             $table->string('reference_3');
             $table->dateTime('status_at');
+            $table->smallInteger('installments', false, true);
             $table->boolean('resolved')->default(false);
             $table->boolean('tokenized')->default(false);
             $table->foreignId('user_id')->constrained('users');

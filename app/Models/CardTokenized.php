@@ -15,8 +15,6 @@ class CardTokenized extends Model
         'cvv',
         'holder',
         'datetime',
-        'franchise',
-        'number_label',
     ];
 
     protected $hidden = [

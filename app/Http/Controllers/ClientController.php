@@ -59,7 +59,7 @@ class ClientController extends Controller
         ]);
     }
 
-    function delete(Client $client) : \Illuminate\Http\JsonResponse {
+    function destroy(Client $client) : \Illuminate\Http\JsonResponse {
         abort_if(!is_null($client->transaction), 402, 'This client has already been associated with a transaction, you wont delete clients with transaction associated');
 
         $client->delete();
