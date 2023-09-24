@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -39,6 +40,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [ProjectController::class, 'index'])->name('index');
         Route::post('/', [ProjectController::class, 'store'])->name('store');
         Route::delete('/{token}', [ProjectController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('transaction')->as('transaction.')->group(function () {
+        Route::get('/', [TransactionController::class, 'index'])->name('index');
     });
 });
 

@@ -6,10 +6,30 @@ use App\Enums\TransactionCurrency;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Inertia\Inertia;
 
 class TransactionController extends Controller
 {
+    public function index($filter = null) : \Inertia\Response {
+        $transactions = Transaction::where('user_id', auth()->user()->id);
+        if ($filter) {
+            $transactions->where('id', 'like', "%$filter%")
+                ->orWhere('status', 'like', "%$filter%")
+                ->orWhere('amount', 'like', "%$filter%")
+                ->orWhere('description', 'like', "%$filter%")
+                ->orWhere('payment_method', 'like', "%$filter%")
+                ->orWhere('reference_1', 'like', "%$filter%");
+        }
+
+        $transactions = $transactions->paginate();
+
+        return Inertia::render('Transaction', [
+            'transactions' => $transactions
+        ]);
+    }
+
     public function get(Transaction $transaction) : Transaction {
+        abort_if($transaction->user_id !== auth()->user()->id, 404);
         return $transaction;
     }
 
