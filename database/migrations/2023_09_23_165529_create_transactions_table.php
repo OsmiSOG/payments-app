@@ -25,10 +25,10 @@ return new class extends Migration
             $table->enum('network', array_column(TransactionNetwork::cases(), 'value'))->nullable();
             $table->string('card_label')->nullable();
             $table->string('reference_1');
-            $table->string('reference_2');
-            $table->string('reference_3');
+            $table->string('reference_2')->nullable();
+            $table->string('reference_3')->nullable();
             $table->dateTime('status_at');
-            $table->smallInteger('installments', false, true);
+            $table->smallInteger('installments', false, true)->default(0);
             $table->boolean('resolved')->default(false);
             $table->boolean('tokenized')->default(false);
             $table->foreignId('user_id')->constrained('users');

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Enums\TransactionCurrency;
+use App\Enums\TransactionMethods;
 use App\Models\Transaction;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -38,7 +40,7 @@ class TransactionController extends Controller
             'amount' => ['required', 'numeric'],
             'description' => ['required', 'string', 'max:150'],
             'currency' => ['required', Rule::in(array_column(TransactionCurrency::cases(), 'value'))],
-            'payment_method' => ['required', Rule::in(array_column(TransactionCurrency::cases(), 'value'))],
+            'payment_method' => ['required', Rule::in(array_column(TransactionMethods::cases(), 'value'))],
             'reference_1' => ['required', 'string', 'max:150'],
             'reference_2' => ['nullable', 'string', 'max:150'],
             'reference_3' => ['nullable', 'string', 'max:150'],
@@ -46,8 +48,10 @@ class TransactionController extends Controller
         ]);
 
         $transaction = new Transaction($request->all());
-        $transaction->client($request->client_id);
-        $transaction->user($request->user());
+        $transaction->status_at = Carbon::now();
+        $transaction->installments = 0;
+        $transaction->client()->associate($request->client_id);
+        $transaction->user()->associate($request->user());
         $transaction->save();
 
         return response()->json([
@@ -63,14 +67,13 @@ class TransactionController extends Controller
             'amount' => ['required', 'numeric'],
             'description' => ['required', 'string', 'max:150'],
             'currency' => ['required', Rule::in(array_column(TransactionCurrency::cases(), 'value'))],
-            'payment_method' => ['required', Rule::in(array_column(TransactionCurrency::cases(), 'value'))],
+            'payment_method' => ['required', Rule::in(array_column(TransactionMethods::cases(), 'value'))],
             'reference_1' => ['required', 'string', 'max:150'],
             'reference_2' => ['nullable', 'string', 'max:150'],
             'reference_3' => ['nullable', 'string', 'max:150'],
-            'client_id' => ['required', Rule::exists('clients', 'id')]
+            'client_id' => ['required', Rule::exists('clients', 'id')->whereNull('deleted_at')]
         ]);
-
-        $transaction->client($request->client_id);
+        $transaction->client()->associate($request->client_id);
         $transaction->update($request->all());
 
         return response()->json([

@@ -32,7 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('transaction')->group(function () {
         Route::get('/{transaction}', [TransactionController::class, 'get']);
         Route::post('/', [TransactionController::class, 'store']);
-        Route::put('/{client}', [TransactionController::class, 'update']);
+        Route::put('/{transaction}', [TransactionController::class, 'update']);
     });
     Route::prefix('tokenized')->group(function () {
         Route::get('/{transaction}', [CardTokenizedController::class, 'get']);

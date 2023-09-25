@@ -28,7 +28,7 @@ class ClientController extends Controller
         ]);
 
         $client = new Client($request->all());
-        $client->user($request->user());
+        $client->user()->associate($request->user());
         $client->save();
 
         return response()->json([
