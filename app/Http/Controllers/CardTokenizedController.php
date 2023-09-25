@@ -22,12 +22,13 @@ class CardTokenizedController extends Controller
             'holder' => ['required', 'string', 'max:80'],
             'number' => ['required', new CardNumber],
             'datetime' => ['required', new CardExpirationDate('my')],
-            'cvv' => ['required', new CardCvc($request->get('card_number'))],
+            'cvv' => ['required', new CardCvc($request->get('number'))],
         ]);
 
-        $card = config('cards')->where('number_2', $request->number)->where('cvv', $request->cvv)->first();
+        $card = collect(config('cards'))->where('number_2', $request->number)->where('cvv', $request->cvv)->first();
         if ($card && $card['status'] === TransactionStatus::Approved->value) {
             $key = Encrypter::generateKey('aes-128-cbc');
+
             $crypt = new Encrypter($key);
 
             $cardTokenized = new CardTokenized([
@@ -47,7 +48,7 @@ class CardTokenizedController extends Controller
 
         return response()->json([
             'saved' => true,
-            'token' => $key,
+            'token' => base64_encode($key),
             'card' => $cardTokenized->only(['id', 'number_label', 'franchise'])
         ]);
 

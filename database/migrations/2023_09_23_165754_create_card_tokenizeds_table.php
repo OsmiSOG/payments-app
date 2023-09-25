@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('card_tokenizeds', function (Blueprint $table) {
-            $table->uuid();
+            $table->uuid('id');
             $table->string('number');
             $table->string('cvv');
             $table->string('holder');

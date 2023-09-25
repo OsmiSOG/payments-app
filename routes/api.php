@@ -35,9 +35,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/{transaction}', [TransactionController::class, 'update']);
     });
     Route::prefix('tokenized')->group(function () {
-        Route::get('/{transaction}', [CardTokenizedController::class, 'get']);
+        Route::get('/{cardTokenized}', [CardTokenizedController::class, 'get']);
         Route::post('/', [CardTokenizedController::class, 'store']);
-        Route::delete('/{client}', [CardTokenizedController::class, 'destroy']);
+        Route::delete('/{cardTokenized}', [CardTokenizedController::class, 'destroy']);
     });
     Route::prefix('checkout')->group(function () {
         Route::post('/', [RunCheckoutController::class, 'normalPayment']);
