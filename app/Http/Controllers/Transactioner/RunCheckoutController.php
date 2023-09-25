@@ -22,12 +22,12 @@ class RunCheckoutController extends Controller
             'holder' => ['required', 'string', 'max:80'],
             'number' => ['required', new CardNumber],
             'datetime' => ['required', new CardExpirationDate('my')],
-            'cvv' => ['required', new CardCvc($request->get('card_number'))],
+            'cvv' => ['required', new CardCvc($request->get('number'))],
             'installments' => ['required', 'integer'],
         ]);
 
         $transaction = Transaction::find($request->transaction_id);
-        if ($card = config('cards')->where('number_2', $request->number)->where('cvv', $request->cvv)->first()) {
+        if ($card = collect(config('cards'))->where('number_2', $request->number)->where('cvv', $request->cvv)->first()) {
             $transaction->network = $card['card_network'];
             $transaction->status = $card['status'];
         } else {
