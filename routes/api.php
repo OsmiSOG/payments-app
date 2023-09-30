@@ -34,13 +34,13 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/', [TransactionController::class, 'store']);
         Route::put('/{transaction}', [TransactionController::class, 'update']);
     });
+    Route::prefix('checkout')->group(function () {
+        Route::post('/', [RunCheckoutController::class, 'normalPayment']);
+        Route::post('/tokenized', [RunCheckoutController::class, 'tokenizedPayment']);
+    });
     Route::prefix('tokenized')->group(function () {
         Route::get('/{cardTokenized}', [CardTokenizedController::class, 'get']);
         Route::post('/', [CardTokenizedController::class, 'store']);
         Route::delete('/{cardTokenized}', [CardTokenizedController::class, 'destroy']);
-    });
-    Route::prefix('checkout')->group(function () {
-        Route::post('/', [RunCheckoutController::class, 'normalPayment']);
-        Route::post('/tokenized', [RunCheckoutController::class, 'tokenizedPayment']);
     });
 });

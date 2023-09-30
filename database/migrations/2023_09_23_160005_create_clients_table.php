@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email');
-            $table->string('idetification_type');
+            $table->string('identification_type');
             $table->string('identification_number');
             $table->string('number_phone');
             $table->string('country');

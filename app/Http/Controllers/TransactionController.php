@@ -56,7 +56,7 @@ class TransactionController extends Controller
 
         return response()->json([
             'saved' => true,
-            'transaction' => $transaction
+            'transaction' => $transaction->refresh()
         ]);
     }
 

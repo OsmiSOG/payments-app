@@ -19,7 +19,7 @@ class ClientController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'between:2,100'],
             'email' => ['required', 'email'],
-            'idetification_type' => ['required', 'string', 'between:2,25'],
+            'identification_type' => ['required', 'string', 'between:2,25'],
             'identification_number' => ['required', 'numeric'],
             'number_phone' => ['required', 'numeric'],
             'country' => ['required', 'string'],
@@ -43,7 +43,7 @@ class ClientController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'between:2,100'],
             'email' => ['required', 'email'],
-            'idetification_type' => ['required', 'string', 'between:2,25'],
+            'identification_type' => ['required', 'string', 'between:2,25'],
             'identification_number' => ['required', 'numeric'],
             'number_phone' => ['required', 'numeric'],
             'country' => ['required', 'string'],
