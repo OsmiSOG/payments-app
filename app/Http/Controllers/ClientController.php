@@ -7,11 +7,11 @@ use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
-    public function get(Request $request, Client $client = null) {
+    public function get(Request $request, string $client = null) {
         if (!$client) {
             return Client::where('user_id', $request->user()->id)->paginate();
         } else {
-            return $client;
+            return Client::where('identification_number', $client)->firstOrFail();
         }
     }
 
