@@ -47,6 +47,9 @@ const columnsTable = ['ID','Amount','Description','Currency','Payment Method','N
                                         {{ transaction.id }}
                                     </th>
                                     <td class="px-6 py-4">
+                                        {{ transaction.amount }}
+                                    </td>
+                                    <td class="px-6 py-4">
                                         {{ transaction.description }}
                                     </td>
                                     <td class="px-6 py-4">
@@ -74,7 +77,7 @@ const columnsTable = ['ID','Amount','Description','Currency','Payment Method','N
                                         {{ transaction.installments }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        {{ transaction.tokenized }}
+                                        {{ transaction.tokenized ? 'Si' : 'No'}}
                                     </td>
                                 </tr>
                                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700" v-if="transactions.data.length === 0">
