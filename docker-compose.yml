@@ -2,7 +2,7 @@ services:
     payments.app:
         container_name: '${APP_SERVICE}'
         build:
-            context: ./vendor/laravel/sail/runtimes/8.2
+            context: ./docker/8.2
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
@@ -21,37 +21,44 @@ services:
         volumes:
             - '.:/var/www/html'
         networks:
-            - sail
-            - local_net
-    # mysql.payments:
-    #     container_name: 'payments-app.mysql.payments'
-    #     image: 'mysql/mysql-server:8.0'
-    #     ports:
-    #         - '${FORWARD_DB_PORT:-3306}:3306'
-    #     environment:
-    #         MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
-    #         MYSQL_ROOT_HOST: '%'
-    #         MYSQL_DATABASE: '${DB_DATABASE}'
-    #         MYSQL_USER: '${DB_USERNAME}'
-    #         MYSQL_PASSWORD: '${DB_PASSWORD}'
-    #         MYSQL_ALLOW_EMPTY_PASSWORD: 1
-    #     volumes:
-    #         - 'sail-mysql-payments:/var/lib/mysql'
-    #         - './vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
-    #     networks:
-    #         - sail
-    #         - local_net
-    #     healthcheck:
-    #         test:
-    #             - CMD
-    #             - mysqladmin
-    #             - ping
-    #             - '-p${DB_PASSWORD}'
-    #         retries: 3
-    #         timeout: 5s
+            - payments_osmisog_network
+    mysql:
+        container_name: 'db-payments-app'
+        image: 'mysql/mysql-server:8.0'
+        ports:
+            - '${FORWARD_DB_PORT:-3306}:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ROOT_HOST: '%'
+            MYSQL_DATABASE: '${DB_DATABASE}'
+            MYSQL_USER: '${DB_USERNAME}'
+            MYSQL_PASSWORD: '${DB_PASSWORD}'
+            # MYSQL_ALLOW_EMPTY_PASSWORD: 1
+        volumes:
+            - 'sail-mysql-payments:/var/lib/mysql'
+            # - './docker/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
+        networks:
+            - payments_osmisog_network
+        healthcheck:
+            test:
+                - CMD
+                - mysqladmin
+                - ping
+                - '-p${DB_PASSWORD}'
+            retries: 3
+            timeout: 5s
+    nginx:
+        container_name: 'nginx-payments-app'
+        restart: always
+        image: 'nginx:1.25.2-alpine'
+        ports:
+            - 80:80
+        volumes:
+            - ./nginx:/etc/nginx/conf.d
+        depends_on:
+            - payments.app
+        networks:
+            - payments_osmisog_network
 networks:
-    sail:
-        driver: bridge
-    local_net:
-        name: local_net
+    payments_osmisog_network:
         driver: bridge
