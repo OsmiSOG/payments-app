@@ -20,6 +20,8 @@ services:
             IGNITION_LOCAL_SITES_PATH: '${PWD}'
         volumes:
             - '.:/var/www/html'
+        depends_on:
+            - mysql
         networks:
             - payments_osmisog_network
     mysql:
