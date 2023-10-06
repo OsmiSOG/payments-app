@@ -37,7 +37,7 @@ services:
             MYSQL_PASSWORD: '${DB_PASSWORD}'
             # MYSQL_ALLOW_EMPTY_PASSWORD: 1
         volumes:
-            - 'sail-mysql-payments:/var/lib/mysql'
+            - 'mysql-payments-app:/var/lib/mysql'
             # - './docker/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
         networks:
             - payments_osmisog_network
@@ -64,3 +64,5 @@ services:
 networks:
     payments_osmisog_network:
         driver: bridge
+volumes:
+    mysql-payments-app:
