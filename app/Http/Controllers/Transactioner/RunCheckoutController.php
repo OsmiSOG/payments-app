@@ -31,7 +31,7 @@ class RunCheckoutController extends Controller
             $transaction->network = $card['card_network'];
             $transaction->status = $card['status'];
         } else {
-            $transaction->network = '';
+            $transaction->network = null;
             $transaction->status = TransactionStatus::Failed->value;
         }
 
