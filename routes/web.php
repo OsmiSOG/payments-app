@@ -28,7 +28,9 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    return Inertia::render('Dashboard', [
+        'cards' => config('cards')
+    ]);
 })->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
